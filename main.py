@@ -15,14 +15,16 @@ async def create_or_get_channel(guild, channel_name):
 
 @client.event
 async def on_ready():
-    global GUILD
-    global GUILD_ID
-    global GUILD_NAME
-    GUILD = client.guilds[0]
-    GUILD_ID = GUILD.id
-    GUILD_NAME = GUILD.name
-    channel = await create_or_get_channel(GUILD, CHANNEL_NAME)
-    print(f"Channel '{channel.name}' with ID '{channel.id}' created/obtained.")
+    global GUILD_INFO
+    GUILD_INFO = {}
+
+    for guild in client.guilds:
+        GUILD_INFO[guild.id] = {
+            'guild': guild,
+            'channel': await create_or_get_channel(guild, CHANNEL_NAME)
+        }
+        print(f"Channel '{GUILD_INFO[guild.id]['channel'].name}' with ID '{GUILD_INFO[guild.id]['channel'].id}' created/obtained for Guild '{guild.name}' with ID '{guild.id}'.")
+
     print(f"Bot is ready. Logged in as {client.user}.")
 
 async def disconnect_if_empty(voice_channel):
