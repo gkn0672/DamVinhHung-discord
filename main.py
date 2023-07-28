@@ -1,5 +1,5 @@
 import discord
-from secret import TOKEN, CHANNEL_NAME
+from secret import TOKEN, CHANNEL_NAME, GUILD_NAME
 from discord.ext import commands
 import asyncio
 client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
