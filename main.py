@@ -2,7 +2,6 @@ import discord
 import os
 from discord.ext import commands
 import asyncio
-from discord.opus import load
 
 TOKEN = os.getenv("TOKEN")
 CHANNEL_NAME = os.getenv("CHANNEL_NAME")
