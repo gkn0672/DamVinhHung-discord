@@ -6,6 +6,7 @@ import asyncio
 TOKEN = os.getenv("TOKEN")
 CHANNEL_NAME = os.getenv("CHANNEL_NAME")
 client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+connected_to_voice_channel = False
 
 async def create_or_get_channel(guild, channel_name):
     existing_channel = discord.utils.get(guild.voice_channels, name=channel_name)
@@ -42,6 +43,8 @@ async def disconnect_if_empty(voice_channel):
         
         await voice_client.disconnect()
         print(f'Disconnected from voice channel: {voice_channel.name}')
+        global connected_to_voice_channel
+        connected_to_voice_channel = False
 
 async def play_audio(voice_channel, audio_source):
     voice_client = voice_channel.guild.voice_client
@@ -53,17 +56,20 @@ async def play_audio(voice_channel, audio_source):
 
 @client.event
 async def on_voice_state_update(member, before, after):
-    if before.channel is None and after.channel is not None:  # User joined a voice channel
+    global connected_to_voice_channel
+    if not connected_to_voice_channel and before.channel is None and after.channel is not None:  # User joined a voice channel
         if after.channel.name == CHANNEL_NAME:
             voice_channel = after.channel
             await join_voice_channel(voice_channel)
             await disconnect_if_empty(voice_channel)
 
 async def join_voice_channel(voice_channel):
+    global connected_to_voice_channel
     if voice_channel.guild.voice_client is None:
         await voice_channel.connect()
         print(f'Joined voice channel: {voice_channel.name}')
         await play_audio(voice_channel, AUDIO_SOURCE)
+        connected_to_voice_channel = True
 
 client.run(TOKEN)
 
