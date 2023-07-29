@@ -1,2 +1,2 @@
 # DamVinhHung-discord
-Mr. Đàm tại Discord.
+Mr. Đàm tại Discord..
