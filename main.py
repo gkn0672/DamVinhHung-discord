@@ -57,13 +57,14 @@ async def play_audio(voice_channel, audio_source):
 
 @client.event
 async def on_voice_state_update(member, before, after):
-    global connected_to_voice_channel
+    if before.channel is not None and before.channel.name == CHANNEL_NAME:
+        # User left the bot's voice channel, check if the channel is empty now
+        await disconnect_if_empty(before.channel)
     if before.channel is None and after.channel is not None:  # User joined a voice channel
         if after.channel.name == CHANNEL_NAME:
             voice_channel = after.channel
             if CONNECT == False:
                 await join_voice_channel(voice_channel)
-            await disconnect_if_empty(voice_channel)
 
 async def join_voice_channel(voice_channel):
     global connected_to_voice_channel
