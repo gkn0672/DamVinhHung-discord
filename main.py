@@ -35,7 +35,12 @@ async def on_ready():
 async def disconnect_if_empty(voice_channel):
     await asyncio.sleep(15)  # Wait for 15 seconds
     if len(voice_channel.members) == 1:  # Only the bot is present in the channel
-        await voice_channel.guild.voice_client.disconnect()
+        voice_client = voice_channel.guild.voice_client
+
+        if voice_client.is_playing():
+            voice_client.stop()
+        
+        await voice_client.disconnect()
         print(f'Disconnected from voice channel: {voice_channel.name}')
 
 async def play_audio(voice_channel, audio_source):
