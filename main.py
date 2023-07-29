@@ -1,9 +1,11 @@
 import discord
-from secret import TOKEN, CHANNEL_NAME, GUILD_NAME
+import os
 from discord.ext import commands
 import asyncio
 from discord.opus import load
 
+TOKEN = os.getenv("TOKEN")
+CHANNEL_NAME = os.getenv("CHANNEL_NAME")
 client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
 async def create_or_get_channel(guild, channel_name):
