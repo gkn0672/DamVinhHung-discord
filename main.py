@@ -1,9 +1,9 @@
 import discord
-import os
+from secret import TOKEN
 from discord.ext import commands
 import asyncio
 from discord import FFmpegPCMAudio
-TOKEN = os.environ['TOKEN']
+#TOKEN = os.environ['TOKEN']
 CHANNEL_NAME = '⭐｜Vào để xây lâu đài tình ái'
 
 client = commands.Bot(command_prefix="!", intents=discord.Intents.all())
